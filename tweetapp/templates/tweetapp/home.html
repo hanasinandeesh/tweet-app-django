@@ -1,0 +1,26 @@
+{% extends 'tweetapp/base.html' %}
+
+{% block content %}
+<h2>All Tweets</h2>
+
+{% for tweet in tweets %}
+<div class="card my-3">
+    <div class="card-header">
+        <strong>{{ tweet.user.username }}</strong> • {{ tweet.created_at|date:"M d, Y H:i" }}
+    </div>
+    <div class="card-body">
+        <p>{{ tweet.content }}</p>
+        {% if tweet.image %}
+            <img src="{{ tweet.image.url }}" class="img-fluid" alt="Tweet Image">
+        {% endif %}
+        {% if tweet.user == request.user %}
+            <a href="{% url 'update_tweet' tweet.pk %}" class="btn btn-sm btn-warning mt-2">Edit</a>
+            <a href="{% url 'delete_tweet' tweet.pk %}" class="btn btn-sm btn-danger mt-2">Delete</a>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<p>No tweets yet!</p>
+{% endfor %}
+{% endblock %}
+
